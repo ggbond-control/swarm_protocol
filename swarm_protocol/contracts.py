@@ -177,7 +177,7 @@ def normalize_mission(value, mission_id):
         raise ValueError("duplicate robot_ids")
     out["robot_ids"] = sorted(ids)
     path = out.get("map_package")
-    if not isinstance(path, str) or not Path(path).is_absolute():
+    if not isinstance(path, str) or "\x00" in path or not Path(path).is_absolute():
         raise ValueError("map_package must be an absolute device-local path")
     tasks = out.get("tasks")
     if not isinstance(tasks, list):

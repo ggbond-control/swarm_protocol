@@ -18,7 +18,7 @@ def runtime_path(node, component):
     root = (
         Path(value).expanduser()
         if value
-        else Path.home() / ".ros" / "swarm" / robot / component
+        else Path.home() / ".ros" / "swarm" / robot / "runtime" / component
     )
     root.mkdir(parents=True, exist_ok=True, mode=0o700)
     return root

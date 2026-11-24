@@ -3,6 +3,7 @@ import os
 import pytest
 from swarm_protocol.contracts import (
     decode,
+    normalize_mission,
     envelope,
     public_mission,
     validate_envelope,
@@ -72,11 +73,45 @@ def test_default_runtime_is_per_robot_and_explicit_path_is_unchanged(
             ),
         )
 
-    assert runtime_path(node("A"), "agent") == tmp_path / ".ros/swarm/A/agent"
-    assert runtime_path(node("B"), "agent") == tmp_path / ".ros/swarm/B/agent"
+    assert runtime_path(node("A"), "agent") == tmp_path / ".ros/swarm/A/runtime/agent"
+    assert runtime_path(node("B"), "agent") == tmp_path / ".ros/swarm/B/runtime/agent"
     assert (
         runtime_path(node("A", str(tmp_path / "custom")), "agent")
         == tmp_path / "custom"
     )
     with pytest.raises(ValueError):
         runtime_path(node("../unsafe"), "agent")
+
+
+@pytest.mark.parametrize(
+    "field,value",
+    [
+        ("robot_ids", []),
+        ("robot_ids", ["A", "A"]),
+        ("robot_ids", [" A"]),
+        ("robot_ids", ["a b"]),
+        ("round_epoch", 0),
+        ("round_epoch", True),
+        ("map_package", "company2"),
+        ("map_package", "relative/map"),
+        ("map_package", ".."),
+        ("tasks", None),
+    ],
+)
+def test_invalid_input_rejected(field, value):
+    m = {"robot_ids": ["A"], "round_epoch": 1, "map_package": "/maps", "tasks": []}
+    m[field] = value
+    with pytest.raises(ValueError):
+        normalize_mission(m, "demo")
+
+
+def test_robot_ids_are_case_sensitive():
+    assert normalize_mission(
+        {
+            "round_epoch": 1,
+            "robot_ids": ["A", "a"],
+            "map_package": "/maps",
+            "tasks": [],
+        },
+        "m",
+    )["robot_ids"] == ["A", "a"]

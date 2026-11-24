@@ -6,4 +6,4 @@
 
 持久文件使用校验和、原子替换与 fsync；private 文件权限为 0600。进程锁只防止同一路径被本机多个进程共同写入，不代替跨设备共识。
 
-全套构建、入口和部署边界见 [协调器 README](../swarm_mission_coordinator/README.md)，消息约定见 [PROTOCOL](../swarm_mission_coordinator/PROTOCOL.md)，测试见 [TEST_LOG](TEST_LOG.md)。
+全套构建、入口、部署边界和消息约定见 [协调器 README](../swarm_mission_coordinator/README.md)，测试见 [TEST_LOG](TEST_LOG.md)。

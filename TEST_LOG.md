@@ -1,5 +1,9 @@
 # swarm_protocol 测试记录
 
+## 2026-11-24
+
+输入校验及大小写测试统一归本包，覆盖绝对地图路径、任务名单、轮次和 JSON。存储、进程锁及协议信封测试保留。最终结果见 [Swarm TEST_LOG](../swarm_mission_coordinator/TEST_LOG.md)。
+
 ## 2026-11-17
 
 新增统一主题默认值：固定新 swarm 平台／心跳／内部主题，默认值不含日期或版本。
